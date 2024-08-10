@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 type Problem = {
     status: 'Not Attempted' | 'Attempted' | 'Completed';
-    title: number;
+    title: string;
     acceptance: number;
     difficulty: 'easy' | 'medium' | 'hard';
 };
