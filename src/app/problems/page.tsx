@@ -1,8 +1,11 @@
+'use client';
+
 import type { NextPage } from "next";
 import { ColumnDef } from "@tanstack/react-table";
 
 import columns from "./columns";
 import DataTable from "./data-table";
+import Navbar from "@/components/ui/navbar";
 
 const Page: NextPage = () => {
     const datas = [
@@ -100,7 +103,8 @@ const Page: NextPage = () => {
 
     return (
         <>
-            <div className="container mx-auto py-10">
+            <Navbar />
+            <div className="flex flex-col container mx-auto mt-20">
                 <DataTable
                     columns={columns as ColumnDef<{ status: string; title: string; acceptance: number; difficulty: string; }>[]}
                     data={datas}
