@@ -4,6 +4,7 @@ import React from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-scroll";
 import { BiCodeAlt } from "react-icons/bi";
+import Image from 'next/image';
 
 import { Button } from "./button";
 
@@ -26,7 +27,7 @@ const menuItems: MenuItem[] = [
     href: "/profile",
   },
   {
-  name: "Report Bug",
+    name: "Report Bug",
     href: "/report",
   },
 ];
@@ -39,7 +40,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto fixed top-0 left-0 right-0 z-50 w-full bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 border-b border-gray-200">
+    <div className="mx-auto fixed top-0 left-0 right-0 z-50 w-full bg-white dark:bg-black backdrop-filter backdrop-blur-lg bg-opacity-30 border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center justify-between px-4 py-4">
         <Link
           activeClass="active"
@@ -50,8 +51,13 @@ const Navbar: React.FC = () => {
           duration={500}
           className="inline-flex items-center space-x-2 cursor-pointer hover:underline"
         >
-          <span className="bg-black rounded-full">
-            <BiCodeAlt className="text-white p-1" size={30} />
+          <span className="bg-white dark:bg-black rounded-full">
+            <Image
+              src="https://img.icons8.com/?size=100&id=N5H8YRvduAGy&format=png&color=000000"
+              width={30}
+              height={30}
+              alt="logo"
+            />
           </span>
         </Link>
         <div className="hidden lg:block">
@@ -68,7 +74,7 @@ const Navbar: React.FC = () => {
                   smooth={true}
                   offset={-20}
                   duration={500}
-                  className="text-sm hover:underline font-semibold text-black cursor-pointer px-2"
+                  className="text-sm hover:underline font-semibold text-black dark:text-white cursor-pointer px-2"
                 >
                   {item.name}
                 </Link>
@@ -84,14 +90,18 @@ const Navbar: React.FC = () => {
         </div>
         {isMenuOpen && (
           <div className="absolute inset-x-0 top-0 z-50 origin-top-right transform p-2 transition lg:hidden">
-            <div className="divide-y-2 divide-white rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+            <div className="divide-y-2 divide-white rounded-lg bg-white dark:bg-black shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5">
               <div className="px-5 pb-6 pt-5">
                 <div className="flex items-center justify-between">
                   <div className="inline-flex items-center space-x-2">
-                    <span className="bg-black rounded-full">
-                      <BiCodeAlt className="text-white p-1" size={30} />
+                    <span className="bg-white dark:bg-black rounded-full">
+                      <Image
+                        src="https://img.icons8.com/?size=100&id=N5H8YRvduAGy&format=png&color=000000"
+                        width={30}
+                        height={30}
+                        alt="logo"
+                      />
                     </span>
-                    <span className="font-bold">Nawaz</span>
                   </div>
                   <div className="-mr-2">
                     <button
@@ -114,7 +124,7 @@ const Navbar: React.FC = () => {
                         duration={500}
                         className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold cursor-pointer"
                       >
-                        <span className="ml-3 text-base font-medium text-black">
+                        <span className="ml-3 text-base font-medium text-black dark:text-white">
                           {item.name}
                         </span>
                       </Link>
