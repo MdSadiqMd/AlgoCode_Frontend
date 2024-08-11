@@ -63,6 +63,16 @@
   * {
     @apply border-border;
   }
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(243 244 246);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(209 213 219);
+    border-radius: 9999px;
+  }
   body {
     @apply bg-background text-foreground;
   }
