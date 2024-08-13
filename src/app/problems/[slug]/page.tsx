@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { NextPage } from "next";
-import Editor from '@monaco-editor/react';
+import Editor, { Monaco, useMonaco } from '@monaco-editor/react';
+import { editor as MonacoEditor } from 'monaco-editor';
 
 import {
   ResizableHandle,
@@ -26,8 +27,14 @@ const defaultComments: Record<Language, string> = {
 };
 
 const Page: NextPage = () => {
+  const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
   const [language, setLanguage] = useState<Language>('java');
   const [editorContent, setEditorContent] = useState<string>(defaultComments.java);
+
+  const onMount = (editor: MonacoEditor.IStandaloneCodeEditor) => {
+    editorRef.current = editor;
+    editor.focus();
+  };
 
   const handleLanguageChange = (value: Language) => {
     setLanguage(value);
@@ -83,6 +90,7 @@ const Page: NextPage = () => {
                     height="100%"
                     width="100%"
                     language={language}
+                    onMount={onMount}
                     value={editorContent}
                     options={options}
                   />
