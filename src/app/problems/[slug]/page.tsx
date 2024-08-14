@@ -2,9 +2,11 @@
 
 import React, { useState, useRef } from 'react';
 import type { NextPage } from "next";
-import Editor, { Monaco, useMonaco } from '@monaco-editor/react';
+import Editor, { useMonaco } from '@monaco-editor/react';
 import { editor as MonacoEditor } from 'monaco-editor';
 
+import { ExecuteCodeResponse } from '@/types/output.types';
+import { executeCode } from '@/lib/execute';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -18,8 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from '@/components/ui/button';
 
 type Language = 'java' | 'cpp' | 'python';
+
 const defaultComments: Record<Language, string> = {
   java: "// Java code here",
   cpp: "// C++ code here",
@@ -30,6 +34,9 @@ const Page: NextPage = () => {
   const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
   const [language, setLanguage] = useState<Language>('java');
   const [editorContent, setEditorContent] = useState<string>(defaultComments.java);
+  const [output, setOutput] = useState<string[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const onMount = (editor: MonacoEditor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
@@ -41,7 +48,26 @@ const Page: NextPage = () => {
     setEditorContent(defaultComments[value]);
   };
 
-  const options = {
+  const runCode = async () => {
+    if (!editorRef.current) return;
+
+    const sourceCode = editorRef.current.getValue();
+    if (!sourceCode) return;
+    console.log("sourceCode" + sourceCode);
+
+    try {
+      setIsLoading(true);
+      const result: ExecuteCodeResponse = await executeCode(language, sourceCode);
+      setOutput(result.stdout.split("\n"));
+      setIsError(!!result.stderr);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const options: MonacoEditor.IEditorOptions = {
     readOnly: false,
     minimap: { enabled: false },
   };
@@ -101,7 +127,22 @@ const Page: NextPage = () => {
             {/* Terminal */}
             <ResizablePanel defaultSize={30}>
               <div className="flex h-full items-center justify-center p-6">
-                <span className="font-semibold">Content</span>
+                <span className="font-semibold">Output</span>
+                {
+                  isLoading &&
+                  <Button
+                    onClick={runCode}
+                  >
+                    Run Code
+                  </Button>
+                }
+                <span>
+                  {
+                    output
+                      ? output.map((line, i) => <span key={i}>{line}</span>)
+                      : 'Click "Run Code" to see the output here'
+                  }
+                </span>
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
