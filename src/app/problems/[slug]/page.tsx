@@ -110,6 +110,11 @@ const Page: NextPage = () => {
                       <SelectItem value="python">Python</SelectItem>
                     </SelectContent>
                   </Select>
+                  <Button
+                    onClick={runCode}
+                  >
+                    Run Code
+                  </Button>
                 </div>
                 <div className='w-full h-full'>
                   <Editor
@@ -128,14 +133,6 @@ const Page: NextPage = () => {
             <ResizablePanel defaultSize={30}>
               <div className="flex h-full items-center justify-center p-6">
                 <span className="font-semibold">Output</span>
-                {
-                  isLoading &&
-                  <Button
-                    onClick={runCode}
-                  >
-                    Run Code
-                  </Button>
-                }
                 <span>
                   {
                     output
