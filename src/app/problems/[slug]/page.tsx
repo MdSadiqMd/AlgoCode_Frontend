@@ -55,7 +55,7 @@ const Page: NextPage = () => {
 
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;
-    console.log("sourceCode" + sourceCode);
+    console.log("sourceCode: ", sourceCode);
 
     try {
       setIsLoading(true);
@@ -66,10 +66,16 @@ const Page: NextPage = () => {
       setOutput(result.stdout.split("\n"));
       setIsError(!!result.stderr);
     } catch (error: any) {
-      console.log(error);
+      console.error("Error during code execution: ", error);
+      setOutput(["Error during code execution"]);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const submitCode = () => {
+    // Implement the submit functionality here
+    console.log("Submit code");
   };
 
   const options: MonacoEditor.IEditorOptions = {
@@ -119,7 +125,6 @@ const Page: NextPage = () => {
                       <SelectItem value="python">Python</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button onClick={runCode}>Run Code</Button>
                 </div>
                 <div className="w-full h-full">
                   <Editor
@@ -131,12 +136,16 @@ const Page: NextPage = () => {
                     options={options}
                   />
                 </div>
+                <div className="w-full flex justify-end space-x-2 mt-2 mr-2">
+                  <Button variant="secondary" onClick={runCode}>Run</Button>
+                  <Button onClick={submitCode}>Submit</Button>
+                </div>
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
             {/* Terminal */}
             <ResizablePanel defaultSize={30}>
-              <div className="flex h-full items-center justify-center p-6">
+              <div className="flex h-full flex-col items-center justify-center p-6">
                 <span className="font-semibold">Output</span>
               </div>
             </ResizablePanel>
