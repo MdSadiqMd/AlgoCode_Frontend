@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import type { NextPage } from "next";
-import Editor, { useMonaco } from '@monaco-editor/react';
-import { editor as MonacoEditor } from 'monaco-editor';
+import Editor, { useMonaco } from "@monaco-editor/react";
+import { editor as MonacoEditor } from "monaco-editor";
 
-import { ExecuteCodeResponse } from '@/types/output.types';
-import { executeCode } from '@/lib/execute';
+import { ExecuteCodeResponse } from "@/types/output.types";
+import { executeCode } from "@/lib/execute";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -20,9 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
-type Language = 'java' | 'cpp' | 'python';
+type Language = "java" | "cpp" | "python";
 
 const defaultComments: Record<Language, string> = {
   java: "// Java code here",
@@ -32,8 +32,10 @@ const defaultComments: Record<Language, string> = {
 
 const Page: NextPage = () => {
   const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
-  const [language, setLanguage] = useState<Language>('java');
-  const [editorContent, setEditorContent] = useState<string>(defaultComments.java);
+  const [language, setLanguage] = useState<Language>("java");
+  const [editorContent, setEditorContent] = useState<string>(
+    defaultComments.java
+  );
   const [output, setOutput] = useState<string[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -57,7 +59,10 @@ const Page: NextPage = () => {
 
     try {
       setIsLoading(true);
-      const result: ExecuteCodeResponse = await executeCode(language, sourceCode);
+      const result: ExecuteCodeResponse = await executeCode(
+        language,
+        sourceCode
+      );
       setOutput(result.stdout.split("\n"));
       setIsError(!!result.stderr);
     } catch (error: any) {
@@ -88,8 +93,12 @@ const Page: NextPage = () => {
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
               </TabsList>
               <TabsContent value="problem">Problem content here</TabsContent>
-              <TabsContent value="editorial">Editorial content here</TabsContent>
-              <TabsContent value="submissions">Submissions content here</TabsContent>
+              <TabsContent value="editorial">
+                Editorial content here
+              </TabsContent>
+              <TabsContent value="submissions">
+                Submissions content here
+              </TabsContent>
             </Tabs>
           </div>
         </ResizablePanel>
@@ -110,13 +119,9 @@ const Page: NextPage = () => {
                       <SelectItem value="python">Python</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button
-                    onClick={runCode}
-                  >
-                    Run Code
-                  </Button>
+                  <Button onClick={runCode}>Run Code</Button>
                 </div>
-                <div className='w-full h-full'>
+                <div className="w-full h-full">
                   <Editor
                     height="100%"
                     width="100%"
@@ -133,13 +138,6 @@ const Page: NextPage = () => {
             <ResizablePanel defaultSize={30}>
               <div className="flex h-full items-center justify-center p-6">
                 <span className="font-semibold">Output</span>
-                <span>
-                  {
-                    output
-                      ? output.map((line, i) => <span key={i}>{line}</span>)
-                      : 'Click "Run Code" to see the output here'
-                  }
-                </span>
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
