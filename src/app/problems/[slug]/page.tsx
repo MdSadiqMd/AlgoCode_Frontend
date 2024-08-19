@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import type { NextPage } from "next";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import { editor as MonacoEditor } from "monaco-editor";
+import ReactMarkdown from "react-markdown";
+import DOMPurify from "dompurify";
+import rehypeRaw from "rehype-raw";
+import axios from "axios";
 
 import { ExecuteCodeResponse } from "@/types/output.types";
 import { executeCode } from "@/lib/execute";
@@ -39,6 +43,28 @@ const Page: NextPage = () => {
   const [output, setOutput] = useState<string[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [descriptionText, setDescriptionText] = useState<string>("");
+
+  const fetchDescriptionText = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/problems/669cd25d2174227a4b9c6a4d"
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    const getDescriptionText = async () => {
+      const text = await fetchDescriptionText();
+      const sanitizedText = DOMPurify.sanitize(text);
+      setDescriptionText(sanitizedText);
+    };
+    getDescriptionText();
+  }, []);
 
   const onMount = (editor: MonacoEditor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
@@ -74,7 +100,6 @@ const Page: NextPage = () => {
   };
 
   const submitCode = () => {
-    // Implement the submit functionality here
     console.log("Submit code");
   };
 
@@ -98,7 +123,11 @@ const Page: NextPage = () => {
                 <TabsTrigger value="editorial">Editorial</TabsTrigger>
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
               </TabsList>
-              <TabsContent value="problem">Problem content here</TabsContent>
+              <TabsContent value="problem">
+                  <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose">
+                    {descriptionText}
+                  </ReactMarkdown>
+              </TabsContent>
               <TabsContent value="editorial">
                 Editorial content here
               </TabsContent>
@@ -137,7 +166,9 @@ const Page: NextPage = () => {
                   />
                 </div>
                 <div className="w-full flex justify-end space-x-2 mt-2 mr-2">
-                  <Button variant="secondary" onClick={runCode}>Run</Button>
+                  <Button variant="secondary" onClick={runCode}>
+                    Run
+                  </Button>
                   <Button onClick={submitCode}>Submit</Button>
                 </div>
               </div>
