@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
 import React from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-scroll";
-import { BiCodeAlt } from "react-icons/bi";
-import Image from 'next/image';
+import Image from "next/image";
 
 import { Button } from "./button";
+import { ModeToggle } from "./toggle";
 
 interface MenuItem {
   name: string;
@@ -82,7 +82,8 @@ const Navbar: React.FC = () => {
             ))}
           </ul>
         </div>
-        <div className="hidden lg:block hover:underline">
+        <div className="hidden lg:flex items-center space-x-4">
+          <ModeToggle />
           <Button>Login</Button>
         </div>
         <div className="lg:hidden">
