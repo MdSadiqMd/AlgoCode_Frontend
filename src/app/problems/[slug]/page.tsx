@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import type { NextPage } from "next";
-import Editor, { useMonaco } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import { editor as MonacoEditor } from "monaco-editor";
 import ReactMarkdown from "react-markdown";
 import DOMPurify from "dompurify";
@@ -48,9 +48,10 @@ const Page: NextPage = () => {
   const fetchDescriptionText = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/problems/669cd25d2174227a4b9c6a4d"
+        process.env.NEXT_PUBLIC_PROBLEM_SERVICE +
+          "/api/v1/problems/669cd25d2174227a4b9c6a4d"
       );
-      return response.data;
+      return JSON.stringify(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -124,9 +125,9 @@ const Page: NextPage = () => {
                 <TabsTrigger value="submissions">Submissions</TabsTrigger>
               </TabsList>
               <TabsContent value="problem">
-                  <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose">
-                    {descriptionText}
-                  </ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose">
+                  {descriptionText}
+                </ReactMarkdown>
               </TabsContent>
               <TabsContent value="editorial">
                 Editorial content here
