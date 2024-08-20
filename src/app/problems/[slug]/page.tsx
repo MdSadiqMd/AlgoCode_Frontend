@@ -9,6 +9,7 @@ import DOMPurify from "dompurify";
 import rehypeRaw from "rehype-raw";
 import axios from "axios";
 
+import { useSocket } from "@/context/SocketProvider";
 import { ExecuteCodeResponse } from "@/types/output.types";
 import { executeCode } from "@/lib/execute";
 import {
@@ -40,10 +41,10 @@ const Page: NextPage = () => {
   const [editorContent, setEditorContent] = useState<string>(
     defaultComments.java
   );
-  const [output, setOutput] = useState<string[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [descriptionText, setDescriptionText] = useState<string>("");
+  const { submissionResponse, connectionResponse } = useSocket();
 
   const fetchDescriptionText = async () => {
     try {
@@ -90,11 +91,9 @@ const Page: NextPage = () => {
         language,
         sourceCode
       );
-      setOutput(result.stdout.split("\n"));
       setIsError(!!result.stderr);
     } catch (error: any) {
       console.error("Error during code execution: ", error);
-      setOutput(["Error during code execution"]);
     } finally {
       setIsLoading(false);
     }
@@ -178,7 +177,10 @@ const Page: NextPage = () => {
             {/* Terminal */}
             <ResizablePanel defaultSize={30}>
               <div className="flex h-full flex-col items-center justify-center p-6">
-                <span className="font-semibold">Output</span>
+                <span className="font-semibold">
+                  <pre>{JSON.stringify(submissionResponse, null, 2)}</pre>
+                  <pre>{JSON.stringify(connectionResponse, null, 2)}</pre>
+                </span>
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
