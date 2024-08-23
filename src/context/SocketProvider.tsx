@@ -7,6 +7,7 @@ import React, {
   useContext,
   createContext,
   useMemo,
+  useEffect,
 } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -15,8 +16,6 @@ interface SocketProviderProps {
 }
 
 interface ISocketContext {
-  connectUser: () => void;
-  fetchConnectionId: () => void;
   submissionResponse: string;
   connectionResponse: string;
 }
@@ -35,45 +34,30 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket] = useState<Socket>(() => io("http://localhost:3001"));
   const [connectionResponse, setConnectionResponse] = useState<string>("");
   const [submissionResponse, setSubmissionResponse] = useState<string>("");
+  const userId = "1";
 
-  const connectUser = useCallback(() => {
-    const userId = "1";
-    console.log("Emitting set user id");
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
     socket.emit("setUserId", userId);
-  }, [socket]);
-
-  const fetchConnectionId = useCallback(() => {
-    const userId = "1";
-    console.log("Emitting get connection id");
     socket.emit("getConnectionId", userId);
-  }, [socket]);
-  console.log(fetchConnectionId);
-
-  socket.on("connectionId", (data) => {
-    setConnectionResponse(data || "No connection ID found");
-  });
-
-  socket.on("submissionPayloadResponse", (data) => {
-    console.log(data);
-    setSubmissionResponse(JSON.stringify(data));
-  });
-
-  socket.on("connect", () => {
-    console.log("Connected to server");
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Disconnected from server");
-  });
+    socket.on("connectionId", (data) => {
+      console.log(data)
+      setConnectionResponse(data)
+    });
+    socket.on("submissionPayloadResponse", (data) => {
+      console.log(data)
+      setSubmissionResponse(data)
+    });
+  }, [])
 
   const contextValue = useMemo(
     () => ({
-      connectUser,
-      fetchConnectionId,
       submissionResponse,
       connectionResponse,
     }),
-    [connectUser, fetchConnectionId, submissionResponse, connectionResponse]
+    [submissionResponse, connectionResponse]
   );
 
   return (
