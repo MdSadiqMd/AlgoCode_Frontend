@@ -1,5 +1,6 @@
 import Navbar from "@/components/ui/navbar";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import Footer from "@/components/ui/footer";
 
 export default function Home() {
   const words = [
@@ -19,6 +20,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
