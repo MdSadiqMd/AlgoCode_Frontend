@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto fixed top-0 left-0 right-0 z-50 w-full bg-white dark:bg-black backdrop-filter backdrop-blur-lg bg-opacity-30 border-b border-gray-200 dark:border-gray-800">
+    <div className="mx-auto fixed top-0 left-0 right-0 z-50 w-full bg-white dark:bg-black backdrop-filter backdrop-blur-lg bg-opacity-30 border-b border-none">
       <div className="flex items-center justify-between px-4 py-4">
         <Link
           activeClass="active"
