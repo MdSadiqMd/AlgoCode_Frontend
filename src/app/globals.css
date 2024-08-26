@@ -59,13 +59,21 @@
   }
 }
 
+@layer utilities {
+  .border-border {
+    border-color: var(--border);
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
   }
+
   *::-webkit-scrollbar {
     display: none;
   }
+
   body {
     @apply bg-background text-foreground;
   }

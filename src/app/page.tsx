@@ -1,8 +1,25 @@
 "use client";
 
+import Link from "next/link";
+import { Bricolage_Grotesque, Space_Mono } from 'next/font/google';
+
 import Navbar from "@/components/ui/navbar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 import Footer from "@/components/ui/footer";
+
+const fontHeading = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-heading',
+});
+
+const fontBody = Space_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+  weight: "400"
+});
 
 export default function Home() {
   const words = [
@@ -13,57 +30,170 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative flex flex-row h-screen w-screen overflow-hidden">
-        <Navbar />
-        <div className="absolute inset-0 z-[-2] bg-white dark:bg-black bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0)_100%)] dark:bg-[radial-gradient(100%_50%_at_50%_0%,rgba(255,255,255,0.13)_0,rgba(0,0,0,0)_50%,rgba(0,0,0,0)_100%)]">
-          <div className="sticky top-0 z-[2] flex flex-col items-center justify-center pointer-events-none">
-            <div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mt-[8%] bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 dark:from-neutral-400 dark:to-neutral-800">
-              <TypewriterEffectSmooth words={words} />
-            </div>
-            <div className="relative mt-[-17%] w-full h-[560px]">
-              <div className="dark:hidden">
-                {/* Light Mode SVG */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="block dark:hidden w-full h-full"
-                  preserveAspectRatio="none"
-                  viewBox="0 0 1440 560"
-                >
-                  <g mask="url(#SvgjsMask1001)" fill="none">
-                    <path d="M1560 560L0 560 L0 369.62Q44.34 293.96, 120 338.3Q163.48 309.78, 192 353.27Q263.39 304.66, 312 376.05Q315.29 307.34, 384 310.63Q433.69 240.31, 504 290Q601.72 267.72, 624 365.44Q668.75 290.19, 744 334.95Q766.15 285.11, 816 307.26Q905.22 276.48, 936 365.7Q975.79 285.49, 1056 325.28Q1100.14 297.42, 1128 341.57Q1164.49 258.06, 1248 294.56Q1322.36 248.91, 1368 323.27Q1414.67 297.94, 1440 344.62Q1472.83 257.44, 1560 290.27z" fill="#182f5d"></path>
-                    <path d="M1464 560L0 560 L0 406.85Q70.45 357.31, 120 427.76Q162 397.75, 192 439.75Q216.32 392.07, 264 416.39Q306.62 339.01, 384 381.63Q430.04 307.67, 504 353.71Q547.38 325.08, 576 368.46Q629 349.46, 648 402.46Q682.13 316.6, 768 350.73Q819.25 329.98, 840 381.22Q916.96 338.18, 960 415.14Q995.55 330.69, 1080 366.25Q1152.33 318.58, 1200 390.91Q1287.56 358.47, 1320 446.02Q1346.3 400.32, 1392 426.62Q1399.32 361.94, 1464 369.25z" fill="#25467d"></path>
-                    <path d="M1464 560L0 560 L0 458.34Q88.44 426.78, 120 515.23Q138.4 413.63, 240 432.03Q315.91 387.94, 360 463.85Q440.73 424.58, 480 505.31Q510.9 464.21, 552 495.1Q555.1 426.2, 624 429.3Q690.93 376.24, 744 443.17Q822.37 401.54, 864 479.91Q910.84 406.75, 984 453.58Q1073.68 423.26, 1104 512.94Q1120.74 409.69, 1224 426.43Q1297.64 380.08, 1344 453.72Q1417.71 407.44, 1464 481.15z" fill="#356cb1"></path>
-                    <path d="M1488 560L0 560 L0 556.08Q20.19 504.27, 72 524.45Q100.56 481.01, 144 509.58Q228.9 474.48, 264 559.38Q316.69 492.07, 384 544.76Q409.99 498.75, 456 524.74Q515.67 512.41, 528 572.09Q579.51 503.6, 648 555.11Q674.33 509.44, 720 535.78Q740.16 483.94, 792 504.1Q838.33 478.43, 864 524.76Q951.75 492.5, 984 580.25Q1002.49 526.74, 1056 545.23Q1070.24 487.47, 1128 501.71Q1204.22 457.93, 1248 534.16Q1302.48 468.64, 1368 523.12Q1421.32 456.43, 1488 509.75z" fill="white"></path>
-                  </g>
-                  <defs>
-                    <mask id="SvgjsMask1001">
-                      <rect width="1440" height="560" fill="#ffffff"></rect>
-                    </mask>
-                  </defs>
-                </svg>
+      <style jsx global>{`
+        :root {
+          --font-heading: ${fontHeading.style.fontFamily};
+          --font-body: ${fontBody.style.fontFamily};
+        }
+        body {
+          font-family: var(--font-body);
+        }
+        h1, h2, h3, h4, h5, h6 {
+          font-family: var(--font-heading);
+        }
+      `}</style>
+      <div className="flex flex-col min-h-[100dvh]">
+        <header className="px-4 lg:px-6 h-14 flex items-center">
+          <Navbar />
+        </header>
+        <main className="flex-1">
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="container px-4 md:px-6">
+              <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+                <div className="flex flex-col justify-center space-y-4">
+                  <div className="space-y-2">
+                    <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                      <TypewriterEffectSmooth words={words} />
+                    </h1>
+                    <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                      Unleash your coding prowess with our cutting-edge Problem Solving IDE. Collaborate in real-time,
+                      execute code, and access a wealth of problem-solving templates.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                    <Link
+                      href="#"
+                      className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Try the IDE
+                    </Link>
+                  </div>
+                </div>
+                <img
+                  src="/placeholder.svg"
+                  alt="Hero"
+                  className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
+                  width="550"
+                  height="550"
+                />
               </div>
-              <div className="not-dark:hidden">
-                {/* Dark Mode SVG */}
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlnsXlink="http://www.w3.org/1999/xlink" className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1440 560">
-                  <g mask="url(&quot;#SvgjsMask1007&quot;)" fill="none">
-                    <path d="M1488 560L0 560 L0 336.62Q58.44 275.06, 120 333.5Q193.99 287.49, 240 361.48Q264.02 265.5, 360 289.53Q404.48 262.01, 432 306.49Q485.6 288.09, 504 341.69Q552.95 318.64, 576 367.6Q617.06 336.66, 648 377.72Q660.34 318.06, 720 330.39Q743.78 282.17, 792 305.95Q844.24 238.19, 912 290.43Q991.34 249.77, 1032 329.11Q1086.21 263.32, 1152 317.53Q1225.66 271.19, 1272 344.85Q1316.43 317.29, 1344 361.72Q1345.24 290.96, 1416 292.2Q1476.52 280.72, 1488 341.24z" fill="#182f5d"></path>
-                    <path d="M1560 560L0 560 L0 371.27Q57.3 356.57, 72 413.87Q97.91 367.78, 144 393.7Q219.27 348.97, 264 424.23Q264.28 352.51, 336 352.79Q408.21 353, 408 425.21Q474.75 371.95, 528 438.7Q568.23 358.92, 648 399.15Q670.21 349.36, 720 371.56Q806.95 338.51, 840 425.46Q882.7 396.16, 912 438.87Q917.99 372.86, 984 378.85Q1025.82 348.67, 1056 390.48Q1111.15 373.63, 1128 428.78Q1181.18 361.96, 1248 415.14Q1265.45 360.6, 1320 378.05Q1405 343.06, 1440 428.06Q1484.55 352.61, 1560 397.16z" fill="#25467d"></path>
-                    <path d="M1536 560L0 560 L0 452.72Q35.29 416.01, 72 451.3Q126.63 433.94, 144 488.57Q190.63 463.2, 216 509.83Q234.24 456.06, 288 474.3Q318.64 432.94, 360 463.59Q431.3 414.88, 480 486.18Q515.38 401.56, 600 436.94Q652.55 417.5, 672 470.05Q708.29 386.34, 792 422.63Q834.12 392.75, 864 434.86Q909.06 407.92, 936 452.98Q997.76 442.75, 1008 504.51Q1049.43 473.94, 1080 515.37Q1098.96 462.33, 1152 481.29Q1160.89 418.19, 1224 427.08Q1293.79 376.87, 1344 446.65Q1393.95 424.61, 1416 474.56Q1492.36 430.91, 1536 507.27z" fill="#356cb1"></path>
-                    <path d="M1512 560L0 560 L0 577.44Q24.83 530.27, 72 555.1Q77.76 488.86, 144 494.62Q186.08 464.7, 216 506.78Q273.79 492.57, 288 550.36Q365.35 507.71, 408 585.06Q426.57 483.63, 528 502.19Q572.38 474.57, 600 518.94Q645.63 492.58, 672 538.21Q741.17 487.38, 792 556.56Q833.17 477.73, 912 518.9Q938.97 473.87, 984 500.84Q1044.72 489.56, 1056 550.28Q1077.49 499.77, 1128 521.27Q1154.77 476.04, 1200 502.81Q1285.43 468.25, 1320 553.68Q1361.25 474.93, 1440 516.18Q1486.82 490.99, 1512 537.81z" fill="rgba(0, 0, 0, 1)"></path>
-                  </g>
-                  <defs>
-                    <mask id="SvgjsMask1007">
-                      <rect width="1440" height="560" fill="#ffffff"></rect>
-                    </mask>
-                  </defs>
-                </svg>
+            </div>
+          </section>
+          <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+            <div className="container px-4 md:px-6">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                    Elevate Your Problem-Solving Journey
+                  </h2>
+                  <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Our Problem Solving IDE empowers you with a suite of cutting-edge features to tackle any challenge
+                    with confidence.
+                  </p>
+                </div>
+              </div>
+              <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+                <div className="flex flex-col justify-center space-y-4">
+                  <ul className="grid gap-6">
+                    <li>
+                      <div className="grid gap-1">
+                        <h3 className="text-xl font-bold">Real-Time Collaboration</h3>
+                        <p className="text-muted-foreground">
+                          Seamlessly work with your team in real-time, sharing code and ideas.
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="grid gap-1">
+                        <h3 className="text-xl font-bold">Code Execution</h3>
+                        <p className="text-muted-foreground">
+                          Test and debug your solutions with our built-in code execution capabilities.
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="grid gap-1">
+                        <h3 className="text-xl font-bold">Problem-Solving Templates</h3>
+                        <p className="text-muted-foreground">
+                          Jumpstart your problem-solving journey with our curated collection of templates.
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <img
+                  src="/placeholder.svg"
+                  alt="Features"
+                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+                  width="550"
+                  height="310"
+                />
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-[-95%] sm:mt-[-35%] md:mt-[-26%] lg:mt-[-10%] xl:mt-[2%]">
-        <Footer />
+          </section>
+          <section className="w-full py-12 md:py-24 lg:py-32">
+            <div className="container px-4 md:px-6">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Testimonials</div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What Our Users Say</h2>
+                  <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Hear from our satisfied users and learn how our Problem Solving IDE has transformed their
+                    problem-solving experience.
+                  </p>
+                </div>
+              </div>
+              <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+                <div className="flex flex-col justify-center space-y-4">
+                  <div className="grid gap-4 rounded-lg border p-6">
+                    <div className="flex items-start gap-4">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src="/placeholder-user.jpg" alt="User" />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-muted-foreground">
+                          "The Problem Solving IDE has been a game-changer for\n my team. The real-time collaboration and
+                          code\n execution features have streamlined our\n problem-solving process."
+                        </p>
+                        <div className="mt-2 font-bold">John Doe</div>
+                        <div className="text-sm text-muted-foreground">Software Engineer</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid gap-4 rounded-lg border p-6">
+                    <div className="flex items-start gap-4">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src="/placeholder-user.jpg" alt="User" />
+                        <AvatarFallback>JA</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-muted-foreground">
+                          "The Problem Solving IDE has been a game-changer for\n my team. The real-time collaboration and
+                          code\n execution features have streamlined our\n problem-solving process."
+                        </p>
+                        <div className="mt-2 font-bold">Jane Appleseed</div>
+                        <div className="text-sm text-muted-foreground">Product Manager</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <img
+                  src="/placeholder.svg"
+                  alt="Testimonials"
+                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+                  width="550"
+                  height="310"
+                />
+              </div>
+            </div>
+          </section>
+        </main>
+        <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+          <Footer />
+        </footer>
       </div>
     </>
   );
