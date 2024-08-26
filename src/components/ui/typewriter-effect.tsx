@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { useEffect } from "react";
+import { motion, stagger, useAnimate, useInView } from "framer-motion";
+
+import { cn } from "@/lib/utils";
 
 export const TypewriterEffect = ({
     words,
@@ -154,10 +155,7 @@ export const TypewriterEffectSmooth = ({
                 }}
             >
                 <div
-                    className="text-[45px] sm:text-[55px] md:text-[70px] lg:text-[85px] xl:text-[100px] font-bold"
-                    style={{
-                        whiteSpace: "nowrap",
-                    }}
+                    className="text-[45px] sm:text-[55px] md:text-[70px] lg:text-[85px] xl:text-[100px] font-bold whitespace-nowrap"
                 >
                     {renderWords()}{" "}
                 </div>{" "}

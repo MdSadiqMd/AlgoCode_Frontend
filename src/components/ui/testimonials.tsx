@@ -90,11 +90,7 @@ export const Testimonials = ({
             >
                 {items.map((item, idx) => (
                     <li
-                        className="w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-200 dark:border-slate-800 px-8 py-6 md:w-[450px]"
-                        style={{
-                            background:
-                                "bg-gradient-to-r from-slate-700 to-gray-900",
-                        }}
+                        className="w-[350px] max-w-full relative rounded-2xl border border-b-0 border-slate-200 dark:border-slate-800 px-8 py-6 md:w-[450px] bg-gradient-to-r from-cyan-100 to-sky-200 dark:from-slate-800 dark:to-gray-900 flex-shrink-0"
                         key={item.name}
                     >
                         <div
