@@ -26,7 +26,7 @@ const Footer = () => {
     return (
         <footer
             aria-labelledby="footer-heading"
-            className="font-inter w-full py-2 bg-white dark:bg-[#020817]"
+            className="font-inter w-full py-2 bg-[#F0F7FF] dark:bg-[#020817]"
         >
             <div className="mx-auto max-w-7xl">
                 <div className="flex flex-col justify-between lg:flex-row">

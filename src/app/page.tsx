@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { Bricolage_Grotesque, Space_Mono } from 'next/font/google';
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 import Navbar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
+import { Testimonials } from "@/components/ui/testimonials";
 
 const fontHeading = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -26,6 +26,39 @@ export default function Home() {
     { text: "Build", className: "text-blue-700 dark:text-blue-400" },
     { text: "on", className: "text-gray-900 dark:text-gray-300" },
     { text: "Cloud.", className: "text-gray-900 dark:text-gray-300" },
+  ];
+
+  const testimonials = [
+    {
+      quote: "AlgoCode saved me from a mid-life crisis—now I only panic about algorithms!",
+      name: "K.V.N.P.S. Akhil",
+      title: "Game Developer Extraordinaire",
+      href: "/akhil.jpg",
+    },
+    {
+      quote: "Customer service so good, I thought I was talking to my mom. She also says I’m special.",
+      name: "S. Bargava Ravikanth",
+      title: "AR/VR Sorcerer",
+      href: "/ravikanth.jpg",
+    },
+    {
+      quote: "Using AlgoCode made me so productive, I finished my work and my colleague's too. Now they avoid me.",
+      name: "Hussain Sharif",
+      title: "Code Ninja",
+      href: "/sharif.jpg",
+    },
+    {
+      quote: "I built this website, so giving it anything less than 5 stars would be awkward, right?",
+      name: "Sadiq Mohammad",
+      title: "Self-Proclaimed Genius",
+      href: "/sadiq.jpg",
+    },
+    {
+      quote: "I’ve tried every Cloud IDE out there—this one finally convinced me to stop looking.",
+      name: "Mohitananda Sanjay",
+      title: "Frontend Wizard",
+      href: "/placeholder-user.jpg",
+    },
   ];
 
   return (
@@ -54,7 +87,7 @@ export default function Home() {
               <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                 <div className="flex flex-col justify-center space-y-4">
                   <div className="space-y-2">
-                    <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                    <h1 className="text-3xl text-muted-foreground font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                       <TypewriterEffectSmooth words={words} />
                     </h1>
                     <p className="max-w-[600px] text-muted-foreground dark:text-[#CCFFFF] md:text-xl">
@@ -147,48 +180,8 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-                <div className="flex flex-col justify-center space-y-4">
-                  <div className="grid gap-4 rounded-lg border p-6">
-                    <div className="flex items-start gap-4">
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src="/placeholder-user.jpg" alt="User" />
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-muted-foreground dark:text-[#CCFFFF]">
-                          "The Problem Solving IDE has been a game-changer for\n my team. The real-time collaboration and
-                          code\n execution features have streamlined our\n problem-solving process."
-                        </p>
-                        <div className="mt-2 font-bold">John Doe</div>
-                        <div className="text-sm text-muted-foreground dark:text-[#CCFFFF]">Software Engineer</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="grid gap-4 rounded-lg border p-6">
-                    <div className="flex items-start gap-4">
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src="/placeholder-user.jpg" alt="User" />
-                        <AvatarFallback>JA</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-muted-foreground dark:text-[#CCFFFF]">
-                          "The Problem Solving IDE has been a game-changer for\n my team. The real-time collaboration and
-                          code\n execution features have streamlined our\n problem-solving process."
-                        </p>
-                        <div className="mt-2 font-bold">Jane Appleseed</div>
-                        <div className="text-sm text-muted-foreground dark:text-[#CCFFFF]">Product Manager</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <img
-                  src="/placeholder.svg"
-                  alt="Testimonials"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-                  width="550"
-                  height="310"
-                />
+              <div className="mx-auto w-full items-center gap-6 py-12">
+                <Testimonials items={testimonials} speed="slow" />
               </div>
             </div>
           </section>
