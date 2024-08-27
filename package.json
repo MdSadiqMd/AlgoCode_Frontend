@@ -24,6 +24,7 @@
     "@tanstack/react-table": "^8.20.1",
     "@types/dompurify": "^3.0.5",
     "axios": "^1.7.4",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.1.6",
@@ -53,6 +54,7 @@
     "@cloudflare/next-on-pages": "^1.13.2",
     "@cloudflare/workers-types": "^4.20240806.0",
     "@react-three/fiber": "^8.17.5",
+    "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -66,5 +68,8 @@
     "typescript": "^5",
     "vercel": "^35.2.3",
     "wrangler": "^3.69.1"
+  },
+  "browser": {
+    "crypto": false
   }
 }
