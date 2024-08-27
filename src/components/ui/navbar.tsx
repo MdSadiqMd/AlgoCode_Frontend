@@ -84,7 +84,6 @@ const Navbar: React.FC = () => {
         </div>
         <div className="hidden lg:flex items-center space-x-4">
           <ModeToggle />
-          <Button>Login</Button>
         </div>
         <div className="lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
@@ -132,7 +131,6 @@ const Navbar: React.FC = () => {
                     ))}
                   </nav>
                 </div>
-                <Button>Login</Button>
               </div>
             </div>
           </div>

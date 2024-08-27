@@ -50,7 +50,7 @@ const Page: NextPage = () => {
     try {
       const response = await axios.get(
         process.env.NEXT_PUBLIC_PROBLEM_SERVICE +
-          "/api/v1/problems/669cd25d2174227a4b9c6a4d"
+        "/api/v1/problems/669cd25d2174227a4b9c6a4d"
       );
       return JSON.stringify(response.data.data);
     } catch (error) {
