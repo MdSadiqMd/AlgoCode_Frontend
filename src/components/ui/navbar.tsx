@@ -4,9 +4,12 @@ import React from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-scroll";
 import Image from "next/image";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 import { Button } from "./button";
 import { ModeToggle } from "./toggle";
+import { toast } from "react-toastify";
 
 interface MenuItem {
   name: string;
@@ -37,6 +40,20 @@ const Navbar: React.FC = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const router = useRouter();
+
+  const logout = async () => {
+    try {
+      await axios.get("api/auth/signout");
+      window.location.reload();
+      toast.success("Logout successfully");
+      router.push("/signup");
+    } catch (error: any) {
+      toast.error("Can't able to logout, Please Try Again");
+      console.log(error.message);
+    }
   };
 
   return (
@@ -84,6 +101,7 @@ const Navbar: React.FC = () => {
         </div>
         <div className="hidden lg:flex items-center space-x-4">
           <ModeToggle />
+          <Button onClick={() => logout()}>Logout</Button>
         </div>
         <div className="lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
@@ -131,6 +149,7 @@ const Navbar: React.FC = () => {
                     ))}
                   </nav>
                 </div>
+                <Button onClick={() => logout()}>Logout</Button>
               </div>
             </div>
           </div>
