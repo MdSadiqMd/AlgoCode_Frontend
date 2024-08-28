@@ -29,44 +29,50 @@ import { Button } from "@/components/ui/button";
 
 type Language = "java" | "cpp" | "python";
 
-const defaultComments: Record<Language, string> = {
-  java: "// Java code here",
-  cpp: "// C++ code here",
-  python: "# Python code here",
-};
+interface CodeSnippets {
+  [key: string]: string;
+}
 
-const Page: NextPage = () => {
+interface PageProps {
+  params: { slug: string; };
+}
+
+const Page: NextPage<PageProps> = ({ params }) => {
   const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
   const [language, setLanguage] = useState<Language>("java");
-  const [editorContent, setEditorContent] = useState<string>(
-    defaultComments.java
-  );
+  const [editorContent, setEditorContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [descriptionText, setDescriptionText] = useState<string>("");
+  const [codeSnippets, setCodeSnippets] = useState<CodeSnippets>({});
   const { submissionResponse, connectionResponse } = useSocket();
 
   const fetchDescriptionText = async () => {
     try {
       const response = await axios.get(
-        process.env.NEXT_PUBLIC_PROBLEM_SERVICE +
-        "/api/v1/problems/669cd25d2174227a4b9c6a4d"
+        `${process.env.NEXT_PUBLIC_PROBLEM_SERVICE}/api/v1/problems/${params.slug}`
       );
-      return JSON.stringify(response.data.data);
+      return response.data.data;
     } catch (error) {
       console.log(error);
     }
-    return "";
+    return {};
   };
 
   useEffect(() => {
     const getDescriptionText = async () => {
-      const text = await fetchDescriptionText();
-      const sanitizedText = DOMPurify.sanitize(text);
+      const data = await fetchDescriptionText();
+      const sanitizedText = DOMPurify.sanitize(JSON.stringify(data, null, 2));
       setDescriptionText(sanitizedText);
+      setCodeSnippets({
+        java: data.codeStubs.find((stub: any) => stub.language === "JAVA")?.userSnippet || "",
+        cpp: data.codeStubs.find((stub: any) => stub.language === "CPP")?.userSnippet || "",
+        python: data.codeStubs.find((stub: any) => stub.language === "PYTHON")?.userSnippet || "",
+      });
+      setEditorContent(data.codeStubs.find((stub: any) => stub.language === "JAVA")?.userSnippet || "");
     };
     getDescriptionText();
-  }, []);
+  }, [params.slug]);
 
   const onMount = (editor: MonacoEditor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
@@ -75,22 +81,17 @@ const Page: NextPage = () => {
 
   const handleLanguageChange = (value: Language) => {
     setLanguage(value);
-    setEditorContent(defaultComments[value]);
+    setEditorContent(codeSnippets[value]);
   };
 
   const runCode = async () => {
     if (!editorRef.current) return;
-
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;
-    console.log("sourceCode: ", sourceCode);
 
     try {
       setIsLoading(true);
-      const result: ExecuteCodeResponse = await executeCode(
-        language,
-        sourceCode
-      );
+      const result: ExecuteCodeResponse = await executeCode(language, sourceCode);
       setIsError(!!result.stderr);
     } catch (error: any) {
       console.error("Error during code execution: ", error);
@@ -179,7 +180,6 @@ const Page: NextPage = () => {
               <div className="flex h-full flex-col items-center justify-center p-6">
                 <span className="font-semibold">
                   <pre>{JSON.stringify(submissionResponse, null, 2)}</pre>
-                  <pre>{JSON.stringify(connectionResponse, null, 2)}</pre>
                 </span>
               </div>
             </ResizablePanel>
