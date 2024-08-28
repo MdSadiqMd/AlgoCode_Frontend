@@ -28,7 +28,8 @@ async function getUser() {
 
 export const executeCode = async (
   language: string,
-  sourceCode: string
+  sourceCode: string,
+  problemId: string
 ): Promise<ExecuteCodeResponse> => {
   try {
     const user = await getUser();
@@ -38,7 +39,7 @@ export const executeCode = async (
       code: sourceCode,
       language: language,
       userId: userId,
-      problemId: "669cd25d2174227a4b9c6a4d",
+      problemId: problemId,
     });
     return response.data;
   } catch (error) {

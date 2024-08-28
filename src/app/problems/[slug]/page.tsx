@@ -45,6 +45,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [descriptionText, setDescriptionText] = useState<string>("");
   const [codeSnippets, setCodeSnippets] = useState<CodeSnippets>({});
+  const [descriptionData, setDescriptionData] = useState<any>(null);
   const { submissionResponse, connectionResponse } = useSocket();
 
   const fetchDescriptionText = async () => {
@@ -52,27 +53,32 @@ const Page: NextPage<PageProps> = ({ params }) => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_PROBLEM_SERVICE}/api/v1/problems/${params.slug}`
       );
-      return response.data.data;
+      console.log(response.data.data);
+      setDescriptionData(response.data.data);
     } catch (error) {
       console.log(error);
     }
-    return {};
   };
 
   useEffect(() => {
     const getDescriptionText = async () => {
-      const data = await fetchDescriptionText();
-      const sanitizedText = DOMPurify.sanitize(JSON.stringify(data, null, 2));
-      setDescriptionText(sanitizedText);
-      setCodeSnippets({
-        java: data.codeStubs.find((stub: any) => stub.language === "JAVA")?.userSnippet || "",
-        cpp: data.codeStubs.find((stub: any) => stub.language === "CPP")?.userSnippet || "",
-        python: data.codeStubs.find((stub: any) => stub.language === "PYTHON")?.userSnippet || "",
-      });
-      setEditorContent(data.codeStubs.find((stub: any) => stub.language === "JAVA")?.userSnippet || "");
+      await fetchDescriptionText();
     };
     getDescriptionText();
   }, [params.slug]);
+
+  useEffect(() => {
+    if (descriptionData) {
+      const sanitizedText = DOMPurify.sanitize(JSON.stringify(descriptionData, null, 2));
+      setDescriptionText(sanitizedText);
+      setCodeSnippets({
+        java: descriptionData.codeStubs.find((stub: any) => stub.language === "JAVA")?.userSnippet || "",
+        cpp: descriptionData.codeStubs.find((stub: any) => stub.language === "CPP")?.userSnippet || "",
+        python: descriptionData.codeStubs.find((stub: any) => stub.language === "PYTHON")?.userSnippet || "",
+      });
+      setEditorContent(descriptionData.codeStubs.find((stub: any) => stub.language === "JAVA")?.userSnippet || "");
+    }
+  }, [descriptionData]);
 
   const onMount = (editor: MonacoEditor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
@@ -85,13 +91,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
   };
 
   const runCode = async () => {
-    if (!editorRef.current) return;
+    if (!editorRef.current || !descriptionData) return;
     const sourceCode = editorRef.current.getValue();
     if (!sourceCode) return;
 
     try {
       setIsLoading(true);
-      const result: ExecuteCodeResponse = await executeCode(language, sourceCode);
+      const result: ExecuteCodeResponse = await executeCode(language, sourceCode, descriptionData._id);
       setIsError(!!result.stderr);
     } catch (error: any) {
       console.error("Error during code execution: ", error);
