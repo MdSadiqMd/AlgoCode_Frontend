@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import {
     Card,
@@ -31,9 +32,11 @@ export default function SignupPage() {
         try {
             isLoading(true);
             const response = await axios.post("/api/auth/signup", user);
+            toast.success("Signup Successfull !!");
             console.log("Signup success", response.data);
             router.push("/login");
         } catch (error: any) {
+            toast.error("SignUp Failed, Please Try Again");
             console.log("Signup failed", error.message);
         } finally {
             isLoading(false);

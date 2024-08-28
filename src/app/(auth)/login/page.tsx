@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 import {
     Card,
@@ -30,15 +30,17 @@ const LoginPage = () => {
     const onLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!user.email || !user.password) {
-            toast.error("Please fill all fields");
+            toast.error("Please Fill all feilds");
             return;
         }
         setIsLoading(true);
         try {
             const response = await axios.post("/api/auth/login", user);
             console.log("Login successful!", response);
+            toast.success("Login Successfull !!");
             router.push("/problems");
         } catch (error: any) {
+            toast.error("Login Failed, Please Try Again");
             console.error("Login failed", error);
         } finally {
             setIsLoading(false);
