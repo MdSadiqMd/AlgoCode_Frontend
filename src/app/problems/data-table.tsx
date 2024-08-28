@@ -52,7 +52,7 @@ function DataTable<TData, TValue>({
 
     return (
         <>
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 space-x-4">
                 <Input
                     placeholder="Filter Problems..."
                     value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
