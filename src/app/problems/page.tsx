@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import type { NextPage } from "next";
 import { ColumnDef } from "@tanstack/react-table";
@@ -19,7 +19,7 @@ const Page: NextPage = () => {
             );
             return response.data.data;
         } catch (error) {
-            console.log(error);
+            console.error("Error fetching problems:", error);
             return [];
         }
     };
@@ -32,14 +32,26 @@ const Page: NextPage = () => {
         return trimmedTitle;
     };
 
+    const formatAcceptance = (acceptance: any): number => {
+        if (acceptance && typeof acceptance === 'object' && '$numberDecimal' in acceptance) {
+            return parseFloat(acceptance.$numberDecimal);
+        }
+        return 0;
+    };
+
     useEffect(() => {
         const getProblems = async () => {
             const data = await fetchProblems();
-            const cleanedData = data.map((item: { status: string; title: string; acceptance: number; difficulty: string; }) => ({
-                ...item,
-                title: cleanTitle(item.title)
-            }));
-            setDatas(cleanedData);
+            if (Array.isArray(data)) {
+                const cleanedData = data.map((item: { status: string; title: string; acceptance: any; difficulty: string; }) => ({
+                    ...item,
+                    title: cleanTitle(item.title),
+                    acceptance: formatAcceptance(item.acceptance)
+                }));
+                setDatas(cleanedData);
+            } else {
+                console.error("Unexpected data format:", data);
+            }
         };
         getProblems();
     }, []);
