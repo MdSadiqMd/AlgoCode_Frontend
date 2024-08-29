@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { cookies } from "next/headers";
 
 import "./globals.css";
 import { SocketProvider } from "@/context/SocketProvider";
@@ -19,8 +20,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const userId: any = cookieStore.get('token');
   return (
-    <SocketProvider>
+    <SocketProvider userId={userId?.value}>
       <html lang="en">
         <body className={inter.className}>
           <ThemeProvider

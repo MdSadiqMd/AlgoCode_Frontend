@@ -53,7 +53,6 @@ const Page: NextPage<PageProps> = ({ params }) => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_PROBLEM_SERVICE}/api/v1/problems/${params.slug}`
       );
-      console.log(response.data.data);
       setDescriptionData(response.data.data);
     } catch (error) {
       console.log(error);
