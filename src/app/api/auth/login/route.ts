@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Create token
-    const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: "1d" });
+    const token = jwt.sign(tokenData, process.env.NEXT_PUBLIC_TOKEN_SECRET!, { expiresIn: "1d" });
     //console.log('Token:', token);
 
     // Set the token in cookies
