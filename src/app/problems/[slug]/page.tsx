@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import DOMPurify from "dompurify";
 import rehypeRaw from "rehype-raw";
 import axios from "axios";
+import { useTheme } from 'next-themes';
 
 import { useSocket } from "@/context/SocketProvider";
 import { ExecuteCodeResponse } from "@/types/output.types";
@@ -47,6 +48,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const [codeSnippets, setCodeSnippets] = useState<CodeSnippets>({});
   const [descriptionData, setDescriptionData] = useState<any>(null);
   const { submissionResponse, connectionResponse } = useSocket();
+  const { theme } = useTheme();
 
   const fetchDescriptionText = async () => {
     try {
@@ -165,6 +167,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
                   <Editor
                     height="100%"
                     width="100%"
+                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
                     language={language}
                     onMount={onMount}
                     value={editorContent}
