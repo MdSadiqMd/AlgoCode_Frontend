@@ -49,6 +49,22 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const [descriptionData, setDescriptionData] = useState<any>(null);
   const { submissionResponse, connectionResponse } = useSocket();
   const { theme } = useTheme();
+  const SuccessResponseData = {
+    "response": {
+      "output": "64\n",
+      "status": "SUCCESS"
+    },
+    "userId": "1",
+    "submissionId": "66d2e42a56a8a460c2a479b8"
+  };
+  const ErrorReponseData = {
+    "response": {
+      "output": "  File \"test.py\", line 10\n    if _name_ == \"_main_\\\":\n                              ^\nSyntaxError: EOL while scanning string literal\n",
+      "status": "ERROR"
+    },
+    "userId": "1",
+    "submissionId": "66d2e44656a8a460c2a479ba"
+  };
 
   const fetchDescriptionText = async () => {
     try {
@@ -187,7 +203,9 @@ const Page: NextPage<PageProps> = ({ params }) => {
             <ResizablePanel defaultSize={30}>
               <div className="flex h-full flex-col items-center justify-center p-6">
                 <span className="font-semibold">
-                  <pre>{JSON.stringify(submissionResponse, null, 2)}</pre>
+                  {/* <pre>{JSON.stringify(submissionResponse, null, 2)}</pre> */}
+                  {/* <pre>{JSON.stringify(SuccessResponseData)}</pre> */}
+                  <pre>{JSON.stringify(ErrorReponseData)}</pre>
                 </span>
               </div>
             </ResizablePanel>
