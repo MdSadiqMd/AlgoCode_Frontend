@@ -56,6 +56,8 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const [descriptionData, setDescriptionData] = useState<any>(null);
   const { submissionResponse, connectionResponse } = useSocket();
   const { theme } = useTheme();
+
+  console.log("params",{params})
   const SuccessResponseData = {
     "response": {
       "output": "64\n",
@@ -130,8 +132,17 @@ const Page: NextPage<PageProps> = ({ params }) => {
     }
   };
 
-  const submitCode = () => {
-    console.log("Submit code");
+  const submitCode = async() => {
+    if (!editorRef.current || !descriptionData) return;
+    const sourceCode = editorRef.current.getValue();
+    if (!sourceCode) return;
+    console.log("Submit code:",{sourceCode,editorContent},sourceCode===editorContent);
+    if(sourceCode!==editorContent){
+      localStorage.setItem(`sourceCodeDataOfLang${language}OfId${params.slug}`,sourceCode)
+    }else if(sourceCode===editorContent){
+    localStorage.removeItem(`sourceCodeDataOfLang${language}OfId${params.slug}`)
+    }
+    // setfinalCodeShown(sourceCode)
   };
 
   const options: MonacoEditor.IEditorOptions = {
@@ -139,6 +150,8 @@ const Page: NextPage<PageProps> = ({ params }) => {
     minimap: { enabled: false },
   };
 
+    const getCodeFromLocalStorage=localStorage.getItem(`sourceCodeDataOfLang${language}OfId${params.slug}`)
+    const finalCodeShown=((getCodeFromLocalStorage===null)?editorContent:getCodeFromLocalStorage)
   return (
       <>
       <Navbar/>
@@ -201,7 +214,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
                       theme={theme === 'dark' ? 'vs-dark' : 'light'}
                       language={language}
                       onMount={onMount}
-                      value={editorContent}
+                      value={finalCodeShown}
                       options={options}
                     />
                   </div>
