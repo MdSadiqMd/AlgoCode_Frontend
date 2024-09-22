@@ -115,8 +115,10 @@ const Page: NextPage<PageProps> = ({ params }) => {
     try {
       setIsLoading(true);
       const result: ExecuteCodeResponse = await executeCode(language, sourceCode, descriptionData._id);
+      console.log(result)
       setIsError(!!result.stderr);
     } catch (error: any) {
+      console.log("error",error)
       console.error("Error during code execution: ", error);
     } finally {
       setIsLoading(false);
@@ -203,9 +205,10 @@ const Page: NextPage<PageProps> = ({ params }) => {
             <ResizablePanel defaultSize={30}>
               <div className="flex h-full flex-col items-center justify-center p-6">
                 <span className="font-semibold">
-                  {/* <pre>{JSON.stringify(submissionResponse, null, 2)}</pre> */}
+
+                  <pre>{JSON.stringify(submissionResponse, null, 2)}</pre>
                   {/* <pre>{JSON.stringify(SuccessResponseData)}</pre> */}
-                  <pre>{JSON.stringify(ErrorReponseData)}</pre>
+                  {/* <pre>{JSON.stringify(ErrorReponseData)}</pre> */}
                 </span>
               </div>
             </ResizablePanel>
