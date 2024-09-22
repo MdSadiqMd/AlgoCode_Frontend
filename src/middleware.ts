@@ -27,6 +27,6 @@ export const config = {
     ],
     unstable_allowDynamic: [
         '/lib/utilities.js',
-        '/node_modules/function-bind/**',
+        '/node_modules/function-bind/',
     ],
 };
