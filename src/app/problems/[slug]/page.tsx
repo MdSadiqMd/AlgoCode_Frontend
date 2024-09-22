@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
-import ProbDes from "@/components/problem-description";
+import ProbDescription from "@/components/problem-description";
 
 import { hatch, grid } from 'ldrs'
 hatch.register()
@@ -177,8 +177,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
                       <TabsTrigger value="submissions">Submissions</TabsTrigger>
                     </TabsList>
                     <TabsContent value="problem">
-                      <ProbDes descriptionText={descriptionText} />
-                      Problem Content here
+                      <ProbDescription descriptionText={descriptionText} />
                     </TabsContent>
                     <TabsContent value="editorial">
                       Editorial content here
