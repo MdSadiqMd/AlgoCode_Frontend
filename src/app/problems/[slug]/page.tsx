@@ -4,9 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 import type { NextPage } from "next";
 import Editor from "@monaco-editor/react";
 import { editor as MonacoEditor } from "monaco-editor";
-import ReactMarkdown from "react-markdown";
+
 import DOMPurify from "dompurify";
-import rehypeRaw from "rehype-raw";
 import axios from "axios";
 import { useTheme } from 'next-themes';
 
@@ -28,6 +27,13 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
+import ProbDes from "@/components/problem-description";
+
+// Import Loader for Run Button
+import { hatch,grid } from 'ldrs'
+hatch.register()
+grid.register()
+
 
 type Language = "java" | "cpp" | "python";
 
@@ -137,7 +143,15 @@ const Page: NextPage<PageProps> = ({ params }) => {
       <>
       <Navbar/>
       <div className="w-screen h-nav_fixer pt-30 mt-20">
-        <ResizablePanelGroup
+        {
+          descriptionData===null?<div className="h-full w-full flex flex-col justify-center items-center">
+              <l-grid
+                size="150"
+                speed="1.5" 
+                color={`${theme==="dark"?"white":"black"}`} 
+              ></l-grid>
+          </div>:
+          <ResizablePanelGroup
           direction="horizontal"
           className="h-full w-full rounded-lg border"
         >
@@ -151,9 +165,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
                   <TabsTrigger value="submissions">Submissions</TabsTrigger>
                 </TabsList>
                 <TabsContent value="problem">
-                  <ReactMarkdown rehypePlugins={[rehypeRaw]} className="prose">
-                    {descriptionText}
-                  </ReactMarkdown>
+                  <ProbDes descriptionText={descriptionText}/>
                 </TabsContent>
                 <TabsContent value="editorial">
                   Editorial content here
@@ -194,9 +206,17 @@ const Page: NextPage<PageProps> = ({ params }) => {
                     />
                   </div>
                   <div className="w-full flex justify-end space-x-2 mt-2 mr-2">
-                    <Button variant="secondary" onClick={runCode}>
-                      Run
-                    </Button>
+                    {
+                      isLoading?<l-hatch
+                      size="25"
+                      stroke="4"
+                      speed="3.5" 
+                      color={`${theme==="dark"?"white":"black"}`} 
+                    ></l-hatch>: <Button variant="secondary" onClick={runCode}>
+                    Run
+                  </Button>
+                    }
+                    
                     <Button onClick={submitCode}>Submit</Button>
                   </div>
                 </div>
@@ -215,6 +235,8 @@ const Page: NextPage<PageProps> = ({ params }) => {
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>
+        }
+        
       </div>
   </>
   );
